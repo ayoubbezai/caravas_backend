@@ -41,7 +41,7 @@ class DriverController extends Controller
             $driver->load(['user', 'company']);
             return response()->json([
                 'success' => true,
-                'data' => $driver
+                'data' => []
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -89,7 +89,7 @@ class DriverController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Driver and user created successfully.',
-                'data' => $driver
+                'data' => []
             ], 201);
 
         } catch (\Exception $e) {

@@ -34,7 +34,79 @@ class Driver extends Model
         'date_of_birth' => 'date',
         'phone' => 'encrypted',
         'address' => 'encrypted',
-
     ];
 
+    /**
+     * Get the user that owns the driver.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the company that owns the driver.
+     */
+    public function company()
+    {
+        return $this->belongsTo(Companies::class);
+    }
+
+    public function lessons()
+{
+    return $this->hasMany(DriverLesson::class);
+}
+
+    /**
+     * Accessor for full name.
+     */
+    public function getFullNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+
+    /**
+     * Accessor for decrypted phone number (formatted).
+     */
+    public function getFormattedPhoneAttribute()
+    {
+        $phone = $this->phone; // Automatically decrypted by Laravel
+        // Simple phone formatting
+        if (strlen($phone) === 10) {
+            return '(' . substr($phone, 0, 3) . ') ' . substr($phone, 3, 3) . '-' . substr($phone, 6, 4);
+        }
+        return $phone;
+    }
+
+    /**
+     * Accessor for decrypted address.
+     */
+    public function getDecryptedAddressAttribute()
+    {
+        return $this->address; // Automatically decrypted by Laravel
+    }
+
+    /**
+     * Scope a query to only include drivers from a specific company.
+     */
+    public function scopeByCompany($query, $companyId)
+    {
+        return $query->where('company_id', $companyId);
+    }
+
+    /**
+     * Scope a query to only include drivers created by typing.
+     */
+    public function scopeCreatedByTyping($query)
+    {
+        return $query->where('is_created_by_typing', true);
+    }
+
+    /**
+     * Scope a query to only include drivers not created by typing.
+     */
+    public function scopeNotCreatedByTyping($query)
+    {
+        return $query->where('is_created_by_typing', false);
+    }
 }
