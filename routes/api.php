@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\GrayCardController;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\DriverLessonsController;
 
@@ -26,3 +27,20 @@ Route::prefix('drivers')->group(function () {
     // Delete a specific lesson for a driver
     Route::delete('{driverId}/lessons/{lessonId}', [DriverLessonsController::class, 'destroy']);
 });
+
+
+Route::get('lessons', [DriverLessonsController::class, 'getAllLessons']);
+
+// Gray card routes
+Route::prefix('drivers')->group(function () {
+    // Get gray card for a driver
+    Route::get('{driverId}/gray-card', [GrayCardController::class, 'show']);
+
+    // Create or update gray card for a driver
+    Route::post('{driverId}/gray-card', [GrayCardController::class, 'storeOrUpdate']);
+
+    // Delete gray card for a driver
+    Route::delete('{driverId}/gray-card', [GrayCardController::class, 'destroy']);
+});
+
+Route::get('gray-cards', [GrayCardController::class, 'index']);

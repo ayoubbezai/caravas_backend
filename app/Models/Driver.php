@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\GrayCard;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Driver extends Model
 {
@@ -35,6 +36,11 @@ class Driver extends Model
         'phone' => 'encrypted',
         'address' => 'encrypted',
     ];
+
+        public function grayCard()
+    {
+        return $this->hasOne(GrayCard::class);
+    }
 
     /**
      * Get the user that owns the driver.
