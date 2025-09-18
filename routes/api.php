@@ -7,4 +7,5 @@ use App\Http\Controllers\CompaniesController;
 // post is for the company admin
 
 Route::apiResource('companies', CompaniesController::class);
+Route::get('companies/{company}/drivers', [DriverController::class, 'getByCompany']);
 Route::apiResource('drivers', DriverController::class);
