@@ -19,6 +19,12 @@ class Companies extends Model
         'user_id',
     ];
 
+
+    public function Insurances()
+    {
+        return $this->hasMany(Insurances::class);
+    }
+
     /**
      * The attributes that should be cast.
      *

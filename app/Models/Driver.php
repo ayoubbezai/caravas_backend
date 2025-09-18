@@ -50,6 +50,12 @@ class Driver extends Model
         return $this->belongsTo(User::class);
     }
 
+
+    public function Insurancess()
+    {
+        return $this->hasMany(Insurances::class);
+    }
+
     /**
      * Get the company that owns the driver.
      */
