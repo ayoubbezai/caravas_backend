@@ -253,4 +253,49 @@ class DriverController extends Controller
             ], 500);
         }
     }
+
+public function details($id = null)
+{
+    try {
+        // If no ID is provided, get the current authenticated driver
+        if ($id === null) {
+            $user = Auth::user();
+            
+            // Check if user is authenticated and is a driver
+            if (!$user || $user->role !== 'driver') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized. Driver access only.'
+                ], 401);
+            }
+            
+            $driver = Driver::with(['user', 'company', 'grayCard', 'Insurancess', 'lessons'])
+                ->where('user_id', $user->id)
+                ->first();
+        } else {
+            // Get specific driver by ID
+            $driver = Driver::with(['user', 'company', 'grayCard', 'Insurancess', 'lessons'])
+                ->find($id);
+        }
+
+        if (!$driver) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Driver not found.'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $driver
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to retrieve driver details.',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
 }
