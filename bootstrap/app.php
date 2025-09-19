@@ -18,6 +18,8 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         // Assign global middleware
+                $middleware->prepend(HandleCors::class);
+
         $middleware->prepend(SanctumCookieToken::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
