@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AddDriverRequest;
-use App\Models\Driver;
 use App\Models\User;
+use App\Models\Driver;
 use App\Models\Companies;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\AddDriverRequest;
 
 class DriverController extends Controller
 {
@@ -209,6 +210,45 @@ class DriverController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to retrieve drivers for company.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+    public function profile()
+    {
+        try {
+            // Get the authenticated user
+            $user = Auth::user();
+
+            // Check if user is authenticated and is a driver
+            if (!$user || $user->role !== 'driver') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized. Driver access only.'
+                ], 401);
+            }
+
+            // Load the driver profile with relationships
+            $driver = Driver::with(['user', 'company'])
+                ->where('user_id', $user->id)
+                ->first();
+
+            if (!$driver) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Driver profile not found.'
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => $driver
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve driver profile.',
                 'error' => $e->getMessage()
             ], 500);
         }

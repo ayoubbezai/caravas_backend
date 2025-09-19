@@ -12,6 +12,7 @@ use App\Http\Controllers\DriverLessonsController;
 Route::apiResource('companies', CompaniesController::class);
 Route::get('companies/{company}/drivers', [DriverController::class, 'getByCompany']);
 Route::apiResource('drivers', DriverController::class);
+Route::get('profile', [DriverController::class, 'profile'])->middleware('auth:sanctum');
 Route::prefix('drivers')->group(function () {
     // Get all lessons for a specific driver
     Route::get('{driverId}/lessons', [DriverLessonsController::class, 'index']);

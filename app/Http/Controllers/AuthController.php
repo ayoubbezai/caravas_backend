@@ -33,6 +33,7 @@ class AuthController extends Controller
                 'id'           => $user->id,
                 'email'        => $user->email,
                 'role'         => $role,
+                'token'        => $token,
 
             ],
         ]);
