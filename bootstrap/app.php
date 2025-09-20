@@ -1,8 +1,9 @@
 <?php
 
+use App\Http\Middleware\HandleCors;
 use Illuminate\Foundation\Application;
-use Illuminate\Foundation\Configuration\Exceptions;
 use App\Http\Middleware\SanctumCookieToken;
+use Illuminate\Foundation\Configuration\Exceptions;
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
@@ -13,7 +14,6 @@ return Application::configure(basePath: dirname(__DIR__))
    ->withMiddleware(function ($middleware) {
         // Assign aliases
         $middleware->alias([
-            'auth' => \App\Http\Middleware\Authenticate::class,
 
         ]);
 

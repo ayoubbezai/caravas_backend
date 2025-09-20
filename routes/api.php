@@ -3,11 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\ConstatController;
 use App\Http\Controllers\GrayCardController;
 use App\Http\Controllers\CompaniesController;
+use App\Http\Controllers\InsurancesController;
 use App\Http\Controllers\DriverLessonsController;
-use App\Http\Controllers\ConstatController;
-
+use App\Http\Controllers\CharjilyPaymentController;
 // post is for the company admin
 
 Route::apiResource('companies', CompaniesController::class);
@@ -52,7 +53,7 @@ Route::get('gray-cards', [GrayCardController::class, 'index']);
 Route::get('details', [DriverController::class, 'details'])->middleware('auth:sanctum');
 
 
-use App\Http\Controllers\InsurancesController;
+
 
 Route::prefix('insurances')->group(function () {
     Route::get('/', [InsurancesController::class, 'index']);           // List all insurances
@@ -70,3 +71,10 @@ Route::get('/drivers/{id}/constats', [ConstatController::class, 'constatsForDriv
 Route::post('login', [AuthController::class, 'login']);
 
 Route::get('constats/{id}/verify-pdf', [ConstatController::class, 'verifyPdf']);
+
+
+    Route::post('/chargily/redirect', [CharjilyPaymentController::class, 'redirect']);
+
+
+// Webhook route (no auth required)
+Route::post('/chargily/webhook', [CharjilyPaymentController::class, 'webhook']);
